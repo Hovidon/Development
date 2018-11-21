@@ -1,0 +1,131 @@
+const http = require('http');
+const express = require('express');
+const app = express();
+app.get("/", (request, response) => {
+  console.log(Date.now() + " Ping Received");
+  response.sendStatus(200);
+});
+app.listen(process.env.PORT);
+setInterval(() => {
+  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000);
+
+const Discord = require('discord.js');
+const economy = require('discord-eco');
+
+
+
+const client = new Discord.Client();
+
+let prefix = '-';
+
+
+function commandIs(str, msg){
+    return msg.content.toLowerCase().startsWith(prefix + str);
+}
+  
+client.on('message', message => {
+  const args = message.content.split(' ').slice(1).join(" ");
+
+  let command = message.content.split(' ')[0].slice(prefix.length);
+  if(!message.content.startsWith(prefix)) return;
+  
+  switch (command) {
+
+    case 'urmom':
+      message.channel.send('ur mom kinda gay lol')
+      break;
+      
+  case 'ping':
+      message.channel.send('' + client.ping + ' ms');
+    break;
+      
+    case 'about': 
+  message.author.send('Thank you for using this bot in its earliest development stages v.0.0.1 ©WishBot'); 
+    break;
+  
+  case 'repeat':
+    message.channel.send(args)
+    break;
+    case "flip":
+{
+      function doRandHT() {
+var rand = ['HEADS!','TAILS!'];
+
+return rand[Math.floor(Math.random()*rand.length)];
+}
+
+ const embed = {
+"title": `Here is the winner!`,
+"description": doRandHT(),
+"color": 0xffed8c,
+};
+message.channel.send({ embed });
+  break;
+}
+                 
+   case 'help':
+      const embed = new Discord.RichEmbed()
+ message.channel.send({embed: {
+    color: 0xffaaaa,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Here is the list of current commands.",
+    url: "",
+    description: "This version is currently in v0.5.1",
+    fields: [{
+        name: "Economy",
+        value: "|balance|,|addmoney|"
+      },
+      {
+        name: "Utilities",
+        value: "|ping|,|about|,|help|"
+      },
+      {
+        name: "Fun",
+        value: "|repeat|,|flip|,|urmom|"
+      },
+      { name: "Moderation",
+        value: "|kick|,|ban|"
+       }
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "© WishBot xx#6195"
+    }
+  }
+});
+  
+      break;
+
+  
+    //DISCORD ECO
+    case 'balance':
+         if (!args[0]) {
+         economy.fetchBalance(message.author.id).then ((i) => {
+            message.channel.send(`:large_orange_diamond:Your balance is **$${i.money}**`)
+          });
+          return;
+        };
+        economy.fetchBalance(message.mentions.users.first().id).then((i) => {
+          message.channel.send(`This user's balance is **$${i.money}**`)
+        });
+      return;
+      break;
+    case 'addmoney':
+      if(message.member.hasPermissions('ADMINISTRATOR')) {
+      economy.updateBalance(message.author.id, args)
+       economy.fetchBalance(message.author.id).then ((i) => {
+         setTimeout(function() {
+        message.channel.send(`:moneybag:*Your new balance is* ** $${i.money}!**`)
+          });
+        }, 10);
+        return;
+      }};
+  
+});
+
+client.login('NTEzNTQwMzc2Mjc1OTc2MjA3.DtO0Ng.AjzLn4VRk-mwSSduabpNgyBfZOg');
